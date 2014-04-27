@@ -35,7 +35,6 @@ function buildQuery(labels) {
     var orQueryStr = '(' + orQuery.join(" OR ") + ')';
     termQueries.push(orQueryStr);
   });
-  console.log(termQueries)
   return termQueries.join(" AND ")
 }
 
@@ -44,17 +43,13 @@ var DescendantManager = function() {
   this.job_count = 0;
   var dm = this;
 
-  $(document).on("desc_start", function(){
-    console.log("starting");
+  $(this).on("desc_start", function(){
     dm.job_count++;
   });
 
-  $(document).on("desc_stop", function(){
-    console.log("stopping");
+  $(this).on("desc_stop", function(){
     dm.job_count--;
-    console.log(dm.job_count)
     if (dm.job_count == 0) {
-      console.log("stopping all")
       var query = buildQuery(dm.labels);
       $("#pm_term").val(query);
       $("#query_link").show();
@@ -73,18 +68,19 @@ function getClassDescendants() {
     var uris = uri_split(val);
     var ont = uris[0];
     var cls = uris[1];
-    $(document).trigger("desc_start");
+    $(dm).trigger("desc_start");
     $.getJSON(ont + "/classes/" + encodeURIComponent(cls) + "?apikey=" + NCBOAPIKEY, function(data){
       termLabels.push(data["prefLabel"]);
       termLabels.concat(data["synonym"]);
       $.getJSON(ont + "/classes/" + encodeURIComponent(cls) + "/descendants?pagesize=1000&apikey=" + NCBOAPIKEY, function(descendants){
-        $.each(descendants["collection"], function(index, desc_cls){
-          termLabels.push(desc_cls["prefLabel"])
-          termLabels.concat(desc_cls["synonym"]);
-        });
+        if (typeof descendants.collection !== 'undefined') {
+          $.each(descendants["collection"], function(index, desc_cls){
+            termLabels.push(desc_cls["prefLabel"])
+            termLabels.concat(desc_cls["synonym"]);
+          });
+        }
         dm.labels.push(termLabels);
-        console.log("stopping from ajax")
-        $(document).trigger("desc_stop");
+        $(dm).trigger("desc_stop");
       });
       // allTermLabels.push(recurseChildren(ont, cls, termLabels));
     });
