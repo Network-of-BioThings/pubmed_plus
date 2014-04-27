@@ -100,7 +100,7 @@ $("#pubmed_chosen").ajaxChosen({
   minLength    : 3,
   queryLimit   : 10,
   delay        : 500,
-  chosenOptions: {width: "350px"},
+  chosenOptions: {},
   searchingText: "Searching for concept ",
   noresultsText: "Concepts not found",
   initialQuery : false
