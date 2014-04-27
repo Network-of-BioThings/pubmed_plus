@@ -48,12 +48,10 @@ $("#pubmed_chosen").ajaxChosen({
     data: search_params,
     dataType: format,
     success: function(data){
-      console.log(data)
       jQuery("#search_spinner").hide();
       jQuery("#search_results").show();
       var classes = {}, classHTML = "";
       jQuery.each(data.collection, function (index, cls) {
-        console.log(cls)
         var cls_id = cls["@id"];
         var ont_id = cls["links"]["ontology"];
         var ont_name = ont_id.split('/').slice(-1)[0];
@@ -68,7 +66,6 @@ $("#pubmed_chosen").ajaxChosen({
         var combined_uri = uri_combine(ont_id, cls_id);
         classes[combined_uri] = classHTML;
       });
-      console.log(classes)
       response(classes);  // Chosen plugin creates select list.
     },
     error: function(){
