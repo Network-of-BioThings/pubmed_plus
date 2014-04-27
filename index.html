@@ -70,11 +70,22 @@ div#pubmed_chosen_chzn input {
     <!-- Main component for a primary marketing message or call to action -->
     <div class="jumbotron">
         <h1>PubMed++</h1>
-        <p>Enhance your PubMed searches with the "knowledge graph".
+        <p>Enhance your PubMed searches with the "knowledge graph".</p>
     </div>
 
     <div>
-      <select id="pubmed_chosen" name="pubmed_chosen" multiple="multiple" data-placeholder="Select concepts to search PubMed" style="width: 350px; height: 22px;"></select>
+      <select id="pubmed_chosen" target="_blank" name="pubmed_chosen" multiple="multiple" data-placeholder="Select concepts to search PubMed" style="width: 350px; height: 22px;">
+<!--         <option selected="true" value="http://stagedata.bioontology.org/ontologies/NCIT ::  http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"><span title="http://stagedata.bioontology.org/ontologies/NCIT" class="search_ontology"><span title="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224" class="search_class"><span class="prefLabel">Melanoma</span><span class="search_ontology_acronym"> (NCIT)</span></span></span></option> -->
+      </select>
+      <button id="generate_query" style="margin-top: -2.39em;" onclick="getClassDescendants();">Generate Query</button>
+    </div>
+
+    <div id="query_link" style="display: none;">
+      <form enctype="application/x-www-form-urlencoded" method="post" action="http://www.ncbi.nlm.nih.gov/pubmed">
+        <input type="hidden" name="term" id="pm_term" value="">
+        <input type="hidden" name="from_pubmed++" value="true">
+        <button id="search">Search</button>
+      </form>
     </div>
 
 </div> <!-- /container -->

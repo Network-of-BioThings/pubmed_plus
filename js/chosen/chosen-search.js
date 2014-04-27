@@ -1,3 +1,5 @@
+NCBOAPIKEY = "4ea81d74-8960-4525-810b-fa1baab576ff"
+
 function markupClass(cls) {
   // Wrap the class prefLabel in a span, indicating that the class is obsolete if necessary.
   var max_word_length = 60;
@@ -9,6 +11,84 @@ function markupClass(cls) {
     label_html.attr('title', 'obsolete class');
   }
   return label_html; // returns a jQuery object; use .prop('outerHTML') to get markup text.
+}
+
+function recurseChildren(ont, cls, termLabels) {
+  $.getJSON(ont + "/classes/" + encodeURIComponent(cls) + "/children?pagesize=500&apikey=" + NCBOAPIKEY, function(children){
+    $.each(children["collection"], function(index, val){
+      termLabels.push(val["prefLabel"]);
+      termLabels.concat(val["synonym"]);
+      termLabels.concat(recurseChildren(ont, val["@id"], termLabels));
+    });
+  });
+  return termLabels;
+}
+
+function buildQuery(labels) {
+  // ((Melanoma[Title/Abstract]) OR "Non-Cutaneous Melanoma"[Title/Abstract]) AND Heart[Title/Abstract]
+  var termQueries = [];
+  $.each(labels, function(index, termLabels){
+    var orQuery = [];
+    $.each(termLabels, function(index, label){
+      orQuery.push('("' + label + '")');
+    });
+    var orQueryStr = '(' + orQuery.join(" OR ") + ')';
+    termQueries.push(orQueryStr);
+  });
+  console.log(termQueries)
+  return termQueries.join(" AND ")
+}
+
+var DescendantManager = function() {
+  this.labels = [];
+  this.job_count = 0;
+  var dm = this;
+
+  $(document).on("desc_start", function(){
+    console.log("starting");
+    dm.job_count++;
+  });
+
+  $(document).on("desc_stop", function(){
+    console.log("stopping");
+    dm.job_count--;
+    console.log(dm.job_count)
+    if (dm.job_count == 0) {
+      console.log("stopping all")
+      var query = buildQuery(dm.labels);
+      $("#pm_term").val(query);
+      $("#query_link").show();
+    }
+  });
+}
+
+function getClassDescendants() {
+  $("#query_link").hide();
+  $("#pm_term").val("");
+  var vals = $("#pubmed_chosen").val();
+  var allTermLabels = [];
+  var dm = new DescendantManager();
+  $.each(vals, function(index, val){
+    var termLabels = [];
+    var uris = uri_split(val);
+    var ont = uris[0];
+    var cls = uris[1];
+    $(document).trigger("desc_start");
+    $.getJSON(ont + "/classes/" + encodeURIComponent(cls) + "?apikey=" + NCBOAPIKEY, function(data){
+      termLabels.push(data["prefLabel"]);
+      termLabels.concat(data["synonym"]);
+      $.getJSON(ont + "/classes/" + encodeURIComponent(cls) + "/descendants?pagesize=1000&apikey=" + NCBOAPIKEY, function(descendants){
+        $.each(descendants["collection"], function(index, desc_cls){
+          termLabels.push(desc_cls["prefLabel"])
+          termLabels.concat(desc_cls["synonym"]);
+        });
+        dm.labels.push(termLabels);
+        console.log("stopping from ajax")
+        $(document).trigger("desc_stop");
+      });
+      // allTermLabels.push(recurseChildren(ont, cls, termLabels));
+    });
+  });
 }
 
 var uri_split_chars = "\t::\t";
@@ -30,7 +110,7 @@ $("#pubmed_chosen").ajaxChosen({
 }, function (options, response, event) {
   // jQuery("#resource_index_classes_chzn .chzn-results li.active-result").remove();
   var format = 'jsonp';
-  var search_url = "http://data.bioontology.org/search"; // direct REST API
+  var search_url = "http://stagedata.bioontology.org/search"; // direct REST API
   // var search_url = "/resource_index/search_classes";  // REST API via resource_index_controller::search_classes
   var search_term = jQuery.trim(options.term);
   if (/[^*]$/.test(search_term)) {
@@ -39,7 +119,7 @@ $("#pubmed_chosen").ajaxChosen({
   var search_params = {};
   search_params['q'] = search_term;
   search_params['format'] = format;
-  search_params['apikey'] = "4ea81d74-8960-4525-810b-fa1baab576ff";
+  search_params['apikey'] = NCBOAPIKEY;
   // NOTE: disabled ontologies selection in the UI, ensure it has no value here.
   // NOTE: ontologies are specified in resource_index_controller::search_classes
   //search_params['ontologies'] = currentOntologyAcronyms().join(',');
