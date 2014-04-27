@@ -24,6 +24,13 @@
                                                                 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
                                                                       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
                                                                           <![endif]-->
+<!-- Chosen CSS -->
+<style>
+div#pubmed_chosen_chzn input {
+  height: 22px !important;
+}
+</style>
+<link href="js/chosen/chosen.css" rel="stylesheet">
 </head>
 
 <body>
@@ -66,14 +73,23 @@
         <p>Enhance your PubMed searches with the "knowledge graph".
     </div>
 
+    <div>
+      <select id="pubmed_chosen" name="pubmed_chosen" multiple="multiple" data-placeholder="Select concepts to search PubMed" style="width: 350px; height: 22px;"></select>
+    </div>
+
 </div> <!-- /container -->
 
 
 <!-- Bootstrap core JavaScript
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
+<!-- Chosen CSS and JS -->
+<script src="js/chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="js/chosen/ajax-chosen.js" type="text/javascript"></script>
+<script src="js/chosen/chosen-search.js" type="text/javascript"></script>
 </body>
 </html>
 
