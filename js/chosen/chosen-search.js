@@ -32,7 +32,7 @@ function buildQuery(labels) {
     $.each(termLabels, function(index, label){
       orQuery.push('("' + label + '")');
     });
-    var orQueryStr = '(' + orQuery.join(" OR ") + ')';
+    var orQueryStr = orQuery.join(" OR ");
     termQueries.push(orQueryStr);
   });
   return termQueries.join(" AND ")
@@ -52,7 +52,8 @@ var DescendantManager = function() {
     if (dm.job_count == 0) {
       var query = buildQuery(dm.labels);
       $("#pm_term").val(query);
-      $("#query_link").show();
+      // $("#query_link").show();
+      $("#search_pubmed").click();
     }
   });
 }

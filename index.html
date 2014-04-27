@@ -77,14 +77,14 @@ div#pubmed_chosen_chzn input {
       <select id="pubmed_chosen" target="_blank" name="pubmed_chosen" multiple="multiple" data-placeholder="Select concepts to search PubMed" style="width: 350px; height: 22px;">
 <!--         <option selected="true" value="http://stagedata.bioontology.org/ontologies/NCIT ::  http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"><span title="http://stagedata.bioontology.org/ontologies/NCIT" class="search_ontology"><span title="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224" class="search_class"><span class="prefLabel">Melanoma</span><span class="search_ontology_acronym"> (NCIT)</span></span></span></option> -->
       </select>
-      <button id="generate_query" style="margin-top: -2.39em;" onclick="getClassDescendants();">Generate Query</button>
+      <button id="generate_query" style="margin-top: -2.39em;" onclick="getClassDescendants();">Search PubMed With Expanded Concepts</button>
     </div>
 
     <div id="query_link" style="display: none;">
       <form enctype="application/x-www-form-urlencoded" method="post" action="http://www.ncbi.nlm.nih.gov/pubmed">
         <input type="hidden" name="term" id="pm_term" value="">
         <input type="hidden" name="from_pubmed++" value="true">
-        <button id="search">Search</button>
+        <button id="search_pubmed">Search</button>
       </form>
     </div>
 
