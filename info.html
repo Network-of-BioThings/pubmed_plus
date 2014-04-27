@@ -59,6 +59,31 @@
         </div><!--/.container-fluid -->
     </div>
 
+    <div class="panel panel-default col-md-6">
+        <!-- Default panel contents -->
+        <div class="panel-heading">References in BIO2RDF</div>
+        <div class="panel-body">
+            <p>Bio2RDF is an open-source project that uses Semantic Web technologies to build and provide the largest network of Linked Data for the Life Sciences. Bio2RDF defines a set of simple conventions to create RDF(S) compatible Linked Data from a diverse set of heterogeneously formatted sources obtained from multiple data providers.</p>
+        </div>
+
+        <!-- Table -->
+        <ul class="list-group " id="bio2rdf">
+            
+        </ul>
+    </div>
+
+    <div class="panel panel-default col-md-6">
+        <!-- Default panel contents -->
+        <div class="panel-heading">References in NIF</div>
+        <div class="panel-body">
+            <p></p>
+        </div>
+
+        <!-- Table -->
+        <ul class="list-group " id="NIF">
+            
+        </ul>
+    </div>
 
 </div> <!-- /container -->
 
@@ -70,10 +95,48 @@
 <script src="js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
+        $.urlParam = function(name, url) {
+        if (!url) {
+        url = window.location.href;
+        }
+        var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(url);
+        if (!results) { 
+        return 0; 
+        }
+        return results[1] || 0;
+        }
+        var url =  "http://s4.semanticscience.org:";
+        var doc = $.urlParam("q");
 
-	// all jQuery code goes here
-        var res = $.parseJSON($.get("http://s4.semanticscience.org:14015/sparql?default-graph-uri=&query=PREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+vocab%3A%09%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3A%3E%0D%0Aselect+distinct+%3Fz+%3Flabel%0D%0A%7B%0D%0A%3Fx+%3Fy+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed%3A18433157%3E.%0D%0A%3Fx+a+%3Fz.%0D%0A%3Fz+vocab%3Aidentifier+%3Flabel%0D%0A%7D%0D%0A%0D%0A&format=application%2Fsparql-results%2Bjson&timeout=0"));
-       console.log(res); 
+
+        var suffix = "/sparql?default-graph-uri=&query=select+distinct+%3Fx%0D%0A%7B%0D%0A%3Fx+%3Fy+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed%3A" +
+        doc +
+        "%3E.%0D%0A%7D%0D%0A%0D%0A&format=text%2Fhtml&timeout=0&debug=on";
+        var sources = {
+bioportal:{port:"14004",name:"BioPortal"},
+ctd:{port:"14003",name:"Comparative Toxicogenomics Database"},
+DrugBank:{port:"14006",name:"DrugBank"},
+goa:{port:"14007",name:"Gene Ontology Annotations"},
+hgnc:{port:"14008",name:"Human Gene Names"},
+interpro:{port:"14010",name:"InterPro"},
+iproclass:{port:"14011",name:"iProClass"},
+irefindex:{port:"14012",name:"iRefIndex"},
+lsr:{port:"14013",name:"LSR"},
+mgi:{port:"14014",name:"Mouse Genome Informatics"},
+        ncbigene:{port:"14015",name:"NCBI Gene"},
+        omim:{port:"1401",name:"Online Medelian Inheritance in Man"},
+        pharmgkb:{port:"14020",name:"Pharmacogenomics Knowledgebase"},
+        sabiork:{port:"14024",name:"SABIO-RK"},
+        sgd:{port:"14024",name:"Saccharomyces Genome Database"},
+        wormbase:{port:"14029",name:"WormBase"}
+        };
+        for (var property in sources) {
+            if (sources.hasOwnProperty(property)) {
+                var final_url = url + sources[property].port +suffix;
+                $("#bio2rdf").append("<a class='list-group-item' href="+final_url+">"+sources[property].name+"</a>");
+
+            }
+        }
 });
 </script>
 </body>
