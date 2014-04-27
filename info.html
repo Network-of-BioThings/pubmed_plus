@@ -13,9 +13,7 @@
 <!-- Bootstrap core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Custom styles for this template -->
-<link href="navbar.css" rel="stylesheet">
-
+<!-- Custom styles for this template-- >
 <!-- Just for debugging purposes. Don't actually copy this line! -->
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
@@ -54,6 +52,7 @@
                     <button type="submit" formaction="http://www.stanford.edu/~jmort/info.html" class="btn btn-default">Info!</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="pubmed_plus.crx">Plugin</a></li>
                     <li><a href="help.html">Help</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
@@ -69,6 +68,14 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function() {
+
+	// all jQuery code goes here
+        var res = $.parseJSON($.get("http://s4.semanticscience.org:14015/sparql?default-graph-uri=&query=PREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+vocab%3A%09%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3A%3E%0D%0Aselect+distinct+%3Fz+%3Flabel%0D%0A%7B%0D%0A%3Fx+%3Fy+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed%3A18433157%3E.%0D%0A%3Fx+a+%3Fz.%0D%0A%3Fz+vocab%3Aidentifier+%3Flabel%0D%0A%7D%0D%0A%0D%0A&format=application%2Fsparql-results%2Bjson&timeout=0"));
+       console.log(res); 
+});
+</script>
 </body>
 </html>
 
