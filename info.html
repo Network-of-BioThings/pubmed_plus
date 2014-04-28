@@ -43,13 +43,12 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li ><a href="index.html">Search</a></li>
-                    <li class="active"><a href="info.html">Information</a></li>
                 </ul>
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <input type="text" name="q" class="form-control" placeholder="PubMed ID (PMID)">
                     </div>
-                    <button type="submit" formaction="http://www.stanford.edu/~jmort/info.html" class="btn btn-default">Info!</button>
+                    <button type="submit" formaction="info.html" class="btn btn-default">Info!</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="pubmed_plus.crx">Plugin</a></li>
@@ -59,7 +58,8 @@
         </div><!--/.container-fluid -->
     </div>
 
-    <div class="panel panel-default col-md-6">
+    <div class="col-md-6">
+    <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading">References in BIO2RDF</div>
         <div class="panel-body">
@@ -71,12 +71,13 @@
             
         </ul>
     </div>
-
-    <div class="panel panel-default col-md-6">
+</div>
+    <div class="col-md-6">
+    <div class="panel panel-default" >
         <!-- Default panel contents -->
         <div class="panel-heading">References in NIF</div>
         <div class="panel-body">
-            <p></p>
+            <p>The Neuroscience Information Framework is a dynamic inventory of Web-based neuroscience resources: data, materials, and tools accessible via any computer connected to the Internet. An initiative of the NIH Blueprint for Neuroscience Research, NIF advances neuroscience research by enabling discovery and access to public research data and tools worldwide through an open source, networked environment.</p>
         </div>
 
         <!-- Table -->
@@ -84,6 +85,7 @@
             
         </ul>
     </div>
+</div>
 
 </div> <!-- /container -->
 
@@ -124,7 +126,7 @@ irefindex:{port:"14012",name:"iRefIndex"},
 lsr:{port:"14013",name:"LSR"},
 mgi:{port:"14014",name:"Mouse Genome Informatics"},
         ncbigene:{port:"14015",name:"NCBI Gene"},
-        omim:{port:"1401",name:"Online Medelian Inheritance in Man"},
+        omim:{port:"14017",name:"Online Medelian Inheritance in Man"},
         pharmgkb:{port:"14020",name:"Pharmacogenomics Knowledgebase"},
         sabiork:{port:"14024",name:"SABIO-RK"},
         sgd:{port:"14024",name:"Saccharomyces Genome Database"},
@@ -137,6 +139,8 @@ mgi:{port:"14014",name:"Mouse Genome Informatics"},
 
             }
         }
+        $("#NIF").append("<a class='list-group-item', href=https://neuinfo.org/mynif/search.php?q=*&b=0&r=20&t=indexable&nif=nlx_154697-2&fl=Publication:"+doc+">NIF Results</a>");
+
 });
 </script>
 </body>
